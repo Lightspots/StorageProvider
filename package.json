@@ -1,0 +1,44 @@
+{
+  "name": "storageprovider",
+  "version": "1.0.0",
+  "description": "A simple API for accessing different Storages, including LocalStorage, SessionStorage and URL get parameters",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "storage"
+  ],
+  "author": "Grisu118",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^22.1.2",
+    "@types/node": "^8.0.57",
+    "jest": "^22.3.0",
+    "jest-localstorage-mock": "^2.2.0",
+    "ts-jest": "^22.0.4",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
+  }
+}
