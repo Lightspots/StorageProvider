@@ -16,7 +16,7 @@ export class StorageProvider {
       prefix);
   }
 
-  public static urlStorage(): Storage {
+  public static urlStorage(prefix?: string): Storage {
     return new StorageImpl((key, value) => {
         const currentParams = UrlQueryHelper.getQueryValues();
         currentParams[key] = value;
@@ -29,7 +29,7 @@ export class StorageProvider {
         const currentParams = UrlQueryHelper.getQueryValues();
         delete currentParams[key];
         history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
-      });
+      }, prefix);
   }
 
 }
