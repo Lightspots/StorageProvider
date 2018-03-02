@@ -20,6 +20,10 @@ describe("key concatenation works corretly", () => {
     storage.set(KEY, "someValue");
     expect(sessionStorage.setItem).toHaveBeenLastCalledWith("test_abc", "someValue");
   });
+  test("on del", () => {
+    storage.del(KEY);
+    expect(sessionStorage.removeItem).toHaveBeenLastCalledWith("test_abc");
+  });
 });
 
 describe("set does correctly serialize values of type", () => {

@@ -20,6 +20,10 @@ describe("key concatenation works corretly", () => {
     storage.set(KEY, "someValue");
     expect(localStorage.setItem).toHaveBeenLastCalledWith("test_abc", "someValue");
   });
+  test("on del", () => {
+    storage.del(KEY);
+    expect(localStorage.removeItem).toHaveBeenLastCalledWith("test_abc");
+  });
 });
 
 describe("set does correctly serialize values of type", () => {

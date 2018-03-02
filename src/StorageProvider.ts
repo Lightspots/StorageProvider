@@ -114,7 +114,7 @@ class StorageImpl implements Storage {
   }
 
   public del(key: string) {
-    this.removeFunc(key);
+    this.removeFunc(this.concat(key));
   }
 
   private concat(key: string): string {
