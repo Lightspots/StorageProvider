@@ -1,6 +1,7 @@
 # Storage Provider
 
 [![Build Status](https://travis-ci.org/Grisu118/StorageProvider.svg?branch=master)](https://travis-ci.org/Grisu118/StorageProvider)
+[![codecov](https://codecov.io/gh/Grisu118/StorageProvider/branch/master/graph/badge.svg)](https://codecov.io/gh/Grisu118/StorageProvider)
 [![npm](https://img.shields.io/npm/v/storageprovider.svg)](https://www.npmjs.com/package/storageprovider)
 [![license](https://img.shields.io/github/license/grisu118/storageprovider.svg)](LICENSE)
 

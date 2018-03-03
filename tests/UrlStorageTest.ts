@@ -31,6 +31,16 @@ describe("key concatenation works corretly", () => {
   });
 });
 
+describe("test with multiple url params", () => {
+  test("two own url params in different prefixes", () => {
+    const storage2 = StorageProvider.urlStorage();
+    storage.set(KEY, "prefixedValue");
+    storage2.set(KEY, "value");
+    expect(window.location.search).toContain(KEY + "=value");
+    expect(window.location.search).toContain("test_" + KEY + "=prefixedValue");
+  });
+});
+
 describe("set does correctly serialize values of type", () => {
   test("string", () => {
     storage.set(KEY, "someValue");
@@ -38,8 +48,8 @@ describe("set does correctly serialize values of type", () => {
   });
 
   test("boolean", () => {
-    storage.set(KEY, false);
-    expectKeyValue("test_" + KEY, "false");
+    storage.set(KEY, true);
+    expectKeyValue("test_" + KEY, "true");
   });
 
   test("number", () => {
