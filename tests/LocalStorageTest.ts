@@ -1,5 +1,5 @@
 import "jest";
-import { Storage, StorageProvider } from "../src/StorageProvider";
+import { Storage, StorageProvider } from "../src";
 
 let storage: Storage;
 

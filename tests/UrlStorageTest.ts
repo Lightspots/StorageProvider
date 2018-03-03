@@ -1,55 +1,60 @@
 import "jest";
 import { Storage, StorageProvider } from "../src";
+import { UrlQueryHelper } from "../src/UrlQueryHelper";
 
 let storage: Storage;
 
 const KEY = "abc";
 
 beforeEach(() => {
-  sessionStorage.clear();
-  jest.restoreAllMocks();
-  storage = StorageProvider.sessionStorage("test");
+  storage = StorageProvider.urlStorage("test");
+  history.replaceState(null, "", UrlQueryHelper.setParams({}));
 });
+
+function expectKeyValue(key: string, value: string) {
+  expect(window.location.search.substring(1)).toEqual(key + "=" + value);
+}
 
 describe("key concatenation works corretly", () => {
   test("on get", () => {
-    storage.get(KEY);
-    expect(sessionStorage.getItem).toHaveBeenLastCalledWith("test_abc");
+    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
+    expect(storage.get(KEY)).toEqual("someValue");
   });
   test("on set", () => {
     storage.set(KEY, "someValue");
-    expect(sessionStorage.setItem).toHaveBeenLastCalledWith("test_abc", "someValue");
+    expectKeyValue("test_" + KEY, "someValue");
   });
   test("on del", () => {
+    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
     storage.del(KEY);
-    expect(sessionStorage.removeItem).toHaveBeenLastCalledWith("test_abc");
+    expect(window.location.search).toEqual("");
   });
 });
 
 describe("set does correctly serialize values of type", () => {
   test("string", () => {
     storage.set(KEY, "someValue");
-    expect(sessionStorage.__STORE__["test_" + KEY]).toBe("someValue");
+    expectKeyValue("test_" + KEY, "someValue");
   });
 
   test("boolean", () => {
     storage.set(KEY, false);
-    expect(sessionStorage.__STORE__["test_" + KEY]).toBe("false");
+    expectKeyValue("test_" + KEY, "false");
   });
 
   test("number", () => {
     storage.set(KEY, -524.6);
-    expect(sessionStorage.__STORE__["test_" + KEY]).toBe("-524.6");
+    expectKeyValue("test_" + KEY, "-524.6");
   });
 
   test("object", () => {
-    storage.set(KEY, { name: "Jane Doe" });
-    expect(sessionStorage.__STORE__["test_" + KEY]).toBe("{\"name\":\"Jane Doe\"}");
+    storage.set(KEY, {name: "Jane Doe"});
+    expectKeyValue("test_" + KEY, "%7B%22name%22%3A%22Jane%20Doe%22%7D");
   });
 
   test("array", () => {
     storage.set(KEY, ["eins", "zwei"]);
-    expect(sessionStorage.__STORE__["test_" + KEY]).toBe("[\"eins\",\"zwei\"]");
+    expectKeyValue("test_" + KEY, "%5B%22eins%22%2C%22zwei%22%5D");
   });
 });
 
@@ -118,7 +123,7 @@ describe("get value of type number as ", () => {
 });
 
 describe("get value of type object as ", () => {
-  const object = { test: "someValue"};
+  const object = {test: "someValue"};
   test("any returns value as string", () => {
     storage.set(KEY, object);
     expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
