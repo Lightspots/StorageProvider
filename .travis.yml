@@ -3,6 +3,12 @@ node_js:
   - "node"
   - "lts/*"
 
+install:
+  - npm install -g codecov
+
 cache:
   directories:
     - "node_modules"
+
+after_success:
+  - codecov

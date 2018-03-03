@@ -41,6 +41,8 @@
     "setupFiles": [
       "jest-localstorage-mock"
     ],
-    "testURL": "http://localhost/unitTest"
+    "testURL": "http://localhost/unitTest",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }
