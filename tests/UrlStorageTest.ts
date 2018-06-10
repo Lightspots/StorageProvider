@@ -1,5 +1,5 @@
 import "jest";
-import { Storage, StorageProvider } from "../src";
+import { HistoryMode, Storage, StorageProvider } from "../src";
 import { UrlQueryHelper } from "../src/UrlQueryHelper";
 
 let storage: Storage;
@@ -15,9 +15,9 @@ function expectKeyValue(key: string, value: string) {
   expect(window.location.search.substring(1)).toEqual(key + "=" + value);
 }
 
-describe("key concatenation works corretly", () => {
+describe("key concatenation works correctly", () => {
   test("on get", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
+    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
     expect(storage.get(KEY)).toEqual("someValue");
   });
   test("on set", () => {
@@ -25,7 +25,7 @@ describe("key concatenation works corretly", () => {
     expectKeyValue("test_" + KEY, "someValue");
   });
   test("on del", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
+    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
     storage.del(KEY);
     expect(window.location.search).toEqual("");
   });
@@ -58,7 +58,7 @@ describe("set does correctly serialize values of type", () => {
   });
 
   test("object", () => {
-    storage.set(KEY, {name: "Jane Doe"});
+    storage.set(KEY, { name: "Jane Doe" });
     expectKeyValue("test_" + KEY, "%7B%22name%22%3A%22Jane%20Doe%22%7D");
   });
 
@@ -133,7 +133,7 @@ describe("get value of type number as ", () => {
 });
 
 describe("get value of type object as ", () => {
-  const object = {test: "someValue"};
+  const object = { test: "someValue" };
   test("any returns value as string", () => {
     storage.set(KEY, object);
     expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
@@ -254,5 +254,37 @@ describe("get* of non existent key returns undefined", () => {
 
   test("getAsArray", () => {
     expect(storage.getAsArray(KEY)).toBe(undefined);
+  });
+});
+
+describe("HistoryMode is handled correctly", () => {
+  test("REPLACE will not increase history length on set", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
+    const initialLength = history.length;
+    store.set(KEY, "someValue");
+    expect(history.length).toBe(initialLength);
+  });
+
+  test("PUSH will increase history length on set", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
+    const initialLength = history.length;
+    store.set(KEY, "someValue");
+    expect(history.length).toBe(initialLength + 1);
+  });
+
+  test("REPLACE will not increase history length on remove", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
+    store.set(KEY, "someValue");
+    const initialLength = history.length;
+    store.del(KEY);
+    expect(history.length).toBe(initialLength);
+  });
+
+  test("PUSH will increase history length on remove", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
+    store.set(KEY, "someValue");
+    const initialLength = history.length;
+    store.del(KEY);
+    expect(history.length).toBe(initialLength + 1);
   });
 });

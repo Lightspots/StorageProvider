@@ -9,9 +9,9 @@ export class StorageProvider {
    */
   public static localStorage(prefix?: string): Storage {
     return new StorageImpl((key, value) => localStorage.setItem(key, value),
-      (key) => localStorage.getItem(key) || undefined,
-      (key) => localStorage.removeItem(key),
-      prefix);
+        (key) => localStorage.getItem(key) || undefined,
+        (key) => localStorage.removeItem(key),
+        prefix);
   }
 
   /**
@@ -21,32 +21,53 @@ export class StorageProvider {
    */
   public static sessionStorage(prefix?: string): Storage {
     return new StorageImpl((key, value) => sessionStorage.setItem(key, value),
-      (key) => sessionStorage.getItem(key) || undefined,
-      (key) => sessionStorage.removeItem(key),
-      prefix);
+        (key) => sessionStorage.getItem(key) || undefined,
+        (key) => sessionStorage.removeItem(key),
+        prefix);
   }
 
   /**
    * Returns a {@link Storage} which will use url get parameters as storage.
    * @param {string} prefix A prefix for all keys managed over this storage instance.
+   * @param {HistoryMode} mode The mode of how we update the history.
    * @returns {Storage} The storage.
    */
-  public static urlStorage(prefix?: string): Storage {
+  public static urlStorage(prefix?: string, mode: HistoryMode = HistoryMode.REPLACE): Storage {
     return new StorageImpl((key, value) => {
-        const currentParams = UrlQueryHelper.getQueryValues();
-        currentParams[key] = value;
-        history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
-      },
-      (key) => {
-        return UrlQueryHelper.getQueryValues()[key];
-      },
-      (key) => {
-        const currentParams = UrlQueryHelper.getQueryValues();
-        delete currentParams[key];
-        history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
-      }, prefix);
+          const currentParams = UrlQueryHelper.getQueryValues();
+          currentParams[key] = value;
+          switch (mode) {
+            case HistoryMode.REPLACE:
+              history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
+              break;
+            case HistoryMode.PUSH:
+              history.pushState(null, "", UrlQueryHelper.setParams(currentParams));
+          }
+        },
+        (key) => {
+          return UrlQueryHelper.getQueryValues()[key];
+        },
+        (key) => {
+          const currentParams = UrlQueryHelper.getQueryValues();
+          delete currentParams[key];
+          switch (mode) {
+            case HistoryMode.REPLACE:
+              history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
+              break;
+            case HistoryMode.PUSH:
+              history.pushState(null, "", UrlQueryHelper.setParams(currentParams));
+          }
+        }, prefix);
   }
 
+}
+
+/**
+ * Mode describing if we want to replace the existing url or push it as new history entry.
+ */
+export enum HistoryMode {
+  REPLACE = "REPLACE",
+  PUSH = "PUSH"
 }
 
 class StorageImpl implements Storage {

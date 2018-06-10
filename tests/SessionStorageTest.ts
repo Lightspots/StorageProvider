@@ -118,7 +118,7 @@ describe("get value of type number as ", () => {
 });
 
 describe("get value of type object as ", () => {
-  const object = { test: "someValue"};
+  const object = { test: "someValue" };
   test("any returns value as string", () => {
     storage.set(KEY, object);
     expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
