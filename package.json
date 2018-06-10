@@ -1,6 +1,6 @@
 {
   "name": "storageprovider",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A simple API for accessing different Storages, including LocalStorage, SessionStorage and URL get parameters",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,6 +9,9 @@
     "build": "tsc",
     "test": "jest"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "storage"
   ],
