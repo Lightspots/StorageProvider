@@ -1,6 +1,6 @@
 import "jest";
-import { Storage, StorageProvider } from "../src";
-import { UrlQueryHelper } from "../src/UrlQueryHelper";
+import {Storage, StorageProvider} from "../src";
+import {UrlQueryHelper} from "../src/UrlQueryHelper";
 
 let storage: Storage;
 
@@ -15,7 +15,7 @@ function expectKeyValue(key: string, value: string) {
   expect(window.location.search.substring(1)).toEqual(key + "=" + value);
 }
 
-describe("key concatenation works corretly", () => {
+describe("key concatenation works correctly", () => {
   test("on get", () => {
     history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
     expect(storage.get(KEY)).toEqual("someValue");
