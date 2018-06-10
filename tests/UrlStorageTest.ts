@@ -1,5 +1,5 @@
 import "jest";
-import {Storage, StorageProvider, UrlMode} from "../src";
+import {HistoryMode, Storage, StorageProvider} from "../src";
 import {UrlQueryHelper} from "../src/UrlQueryHelper";
 
 let storage: Storage;
@@ -257,23 +257,23 @@ describe("get* of non existent key returns undefined", () => {
   });
 });
 
-describe("UrlMode is handled correctly", () => {
+describe("HistoryMode is handled correctly", () => {
   test("REPLACE will not increase history length on set", () => {
-    const store = StorageProvider.urlStorage("", UrlMode.REPLACE);
+    const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
     const initialLength = history.length;
     store.set(KEY, "someValue");
     expect(history.length).toBe(initialLength);
   });
 
   test("PUSH will increase history length on set", () => {
-    const store = StorageProvider.urlStorage("", UrlMode.PUSH);
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
     const initialLength = history.length;
     store.set(KEY, "someValue");
     expect(history.length).toBe(initialLength + 1);
   });
 
   test("REPLACE will not increase history length on remove", () => {
-    const store = StorageProvider.urlStorage("", UrlMode.REPLACE);
+    const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
     store.set(KEY, "someValue");
     const initialLength = history.length;
     store.del(KEY);
@@ -281,7 +281,7 @@ describe("UrlMode is handled correctly", () => {
   });
 
   test("PUSH will increase history length on remove", () => {
-    const store = StorageProvider.urlStorage("", UrlMode.PUSH);
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
     store.set(KEY, "someValue");
     const initialLength = history.length;
     store.del(KEY);

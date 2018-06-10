@@ -29,18 +29,18 @@ export class StorageProvider {
   /**
    * Returns a {@link Storage} which will use url get parameters as storage.
    * @param {string} prefix A prefix for all keys managed over this storage instance.
-   * @param {UrlMode} mode The mode of how we update the history.
+   * @param {HistoryMode} mode The mode of how we update the history.
    * @returns {Storage} The storage.
    */
-  public static urlStorage(prefix?: string, mode: UrlMode = UrlMode.REPLACE): Storage {
+  public static urlStorage(prefix?: string, mode: HistoryMode = HistoryMode.REPLACE): Storage {
     return new StorageImpl((key, value) => {
           const currentParams = UrlQueryHelper.getQueryValues();
           currentParams[key] = value;
           switch (mode) {
-            case UrlMode.REPLACE:
+            case HistoryMode.REPLACE:
               history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
               break;
-            case UrlMode.PUSH:
+            case HistoryMode.PUSH:
               history.pushState(null, "", UrlQueryHelper.setParams(currentParams));
           }
         },
@@ -51,10 +51,10 @@ export class StorageProvider {
           const currentParams = UrlQueryHelper.getQueryValues();
           delete currentParams[key];
           switch (mode) {
-            case UrlMode.REPLACE:
+            case HistoryMode.REPLACE:
               history.replaceState(null, "", UrlQueryHelper.setParams(currentParams));
               break;
-            case UrlMode.PUSH:
+            case HistoryMode.PUSH:
               history.pushState(null, "", UrlQueryHelper.setParams(currentParams));
           }
         }, prefix);
@@ -65,7 +65,7 @@ export class StorageProvider {
 /**
  * Mode describing if we want to replace the existing url or push it as new history entry.
  */
-export enum UrlMode {
+export enum HistoryMode {
   REPLACE = "REPLACE",
   PUSH = "PUSH"
 }

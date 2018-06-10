@@ -1,1 +1,1 @@
-export { Storage, StorageProvider, UrlMode } from "./StorageProvider";
+export { Storage, StorageProvider, HistoryMode } from "./StorageProvider";
