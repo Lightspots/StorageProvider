@@ -1,4 +1,4 @@
-import {UrlQueryHelper} from "./UrlQueryHelper";
+import { UrlQueryHelper } from "./UrlQueryHelper";
 
 export class StorageProvider {
 

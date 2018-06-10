@@ -1,6 +1,6 @@
 import "jest";
-import {HistoryMode, Storage, StorageProvider} from "../src";
-import {UrlQueryHelper} from "../src/UrlQueryHelper";
+import { HistoryMode, Storage, StorageProvider } from "../src";
+import { UrlQueryHelper } from "../src/UrlQueryHelper";
 
 let storage: Storage;
 
@@ -17,7 +17,7 @@ function expectKeyValue(key: string, value: string) {
 
 describe("key concatenation works correctly", () => {
   test("on get", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
+    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
     expect(storage.get(KEY)).toEqual("someValue");
   });
   test("on set", () => {
@@ -25,7 +25,7 @@ describe("key concatenation works correctly", () => {
     expectKeyValue("test_" + KEY, "someValue");
   });
   test("on del", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({test_abc: "someValue"}));
+    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
     storage.del(KEY);
     expect(window.location.search).toEqual("");
   });
@@ -58,7 +58,7 @@ describe("set does correctly serialize values of type", () => {
   });
 
   test("object", () => {
-    storage.set(KEY, {name: "Jane Doe"});
+    storage.set(KEY, { name: "Jane Doe" });
     expectKeyValue("test_" + KEY, "%7B%22name%22%3A%22Jane%20Doe%22%7D");
   });
 
@@ -133,7 +133,7 @@ describe("get value of type number as ", () => {
 });
 
 describe("get value of type object as ", () => {
-  const object = {test: "someValue"};
+  const object = { test: "someValue" };
   test("any returns value as string", () => {
     storage.set(KEY, object);
     expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
