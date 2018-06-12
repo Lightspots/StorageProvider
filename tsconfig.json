@@ -4,7 +4,8 @@
     "target": "es5",
     "declaration": true,
     "outDir": "./dist",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "sourceMap": false
   },
   "include": [
     "src/**/*"
