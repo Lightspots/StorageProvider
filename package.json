@@ -1,12 +1,13 @@
 {
   "name": "storageprovider",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A simple API for accessing different Storages, including LocalStorage, SessionStorage and URL get parameters",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/Grisu118/StorageProvider",
   "scripts": {
     "build": "tsc",
+    "lint": "tslint --project .",
     "test": "jest"
   },
   "files": [

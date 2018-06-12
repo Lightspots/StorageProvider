@@ -24,6 +24,11 @@ describe("key concatenation works corretly", () => {
     storage.del(KEY);
     expect(localStorage.removeItem).toHaveBeenLastCalledWith("test_abc");
   });
+  test("on del multiple", () => {
+    storage.del([KEY, "efg"]);
+    expect(localStorage.removeItem).toHaveBeenCalledWith("test_abc");
+    expect(localStorage.removeItem).toHaveBeenLastCalledWith("test_efg");
+  });
 });
 
 describe("set does correctly serialize values of type", () => {
@@ -50,6 +55,19 @@ describe("set does correctly serialize values of type", () => {
   test("array", () => {
     storage.set(KEY, ["eins", "zwei"]);
     expect(localStorage.__STORE__["test_" + KEY]).toBe("[\"eins\",\"zwei\"]");
+  });
+
+  test("multiple types in one call", () => {
+    storage.set({
+      str: "someString",
+      bool: true,
+      obj: {
+        val: "innerValue"
+      }
+    });
+    expect(localStorage.__STORE__.test_str).toBe("someString");
+    expect(localStorage.__STORE__.test_bool).toBe("true");
+    expect(localStorage.__STORE__.test_obj).toBe("{\"val\":\"innerValue\"}");
   });
 });
 

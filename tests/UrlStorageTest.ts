@@ -1,14 +1,20 @@
 import "jest";
 import { HistoryMode, Storage, StorageProvider } from "../src";
-import { UrlQueryHelper } from "../src/UrlQueryHelper";
 
 let storage: Storage;
 
 const KEY = "abc";
 
+function url() {
+  const protocol = window.location.protocol;
+  const host = window.location.host;
+  const path = window.location.pathname;
+  return `${protocol}//${host}${path}`;
+}
+
 beforeEach(() => {
   storage = StorageProvider.urlStorage("test");
-  history.replaceState(null, "", UrlQueryHelper.setParams({}));
+  history.replaceState(null, "", url());
 });
 
 function expectKeyValue(key: string, value: string) {
@@ -17,7 +23,7 @@ function expectKeyValue(key: string, value: string) {
 
 describe("key concatenation works correctly", () => {
   test("on get", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
+    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
     expect(storage.get(KEY)).toEqual("someValue");
   });
   test("on set", () => {
@@ -25,8 +31,13 @@ describe("key concatenation works correctly", () => {
     expectKeyValue("test_" + KEY, "someValue");
   });
   test("on del", () => {
-    history.replaceState(null, "", UrlQueryHelper.setParams({ test_abc: "someValue" }));
+    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
     storage.del(KEY);
+    expect(window.location.search).toEqual("?test_efg=otherValue");
+  });
+  test("on del multiple", () => {
+    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
+    storage.del([KEY, "efg"]);
     expect(window.location.search).toEqual("");
   });
 });
@@ -65,6 +76,20 @@ describe("set does correctly serialize values of type", () => {
   test("array", () => {
     storage.set(KEY, ["eins", "zwei"]);
     expectKeyValue("test_" + KEY, "%5B%22eins%22%2C%22zwei%22%5D");
+  });
+
+  test("multiple types in one call", () => {
+    storage.set({
+      str: "someString",
+      bool: true,
+      obj: {
+        val: "innerValue"
+      }
+    });
+    const keyValues = window.location.search.substring(1).split("&");
+    expect(keyValues).toContain("test_str=someString");
+    expect(keyValues).toContain("test_bool=true");
+    expect(keyValues).toContain("test_obj=%7B%22val%22%3A%22innerValue%22%7D");
   });
 });
 
@@ -258,21 +283,21 @@ describe("get* of non existent key returns undefined", () => {
 });
 
 describe("HistoryMode is handled correctly", () => {
-  test("REPLACE will not increase history length on set", () => {
+  test("REPLACE will not increment history length on set", () => {
     const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
     const initialLength = history.length;
     store.set(KEY, "someValue");
     expect(history.length).toBe(initialLength);
   });
 
-  test("PUSH will increase history length on set", () => {
+  test("PUSH will increment history length on set", () => {
     const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
     const initialLength = history.length;
     store.set(KEY, "someValue");
     expect(history.length).toBe(initialLength + 1);
   });
 
-  test("REPLACE will not increase history length on remove", () => {
+  test("REPLACE will not increment history length on remove", () => {
     const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
     store.set(KEY, "someValue");
     const initialLength = history.length;
@@ -280,11 +305,38 @@ describe("HistoryMode is handled correctly", () => {
     expect(history.length).toBe(initialLength);
   });
 
-  test("PUSH will increase history length on remove", () => {
+  test("PUSH will increment history length on remove", () => {
     const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
     store.set(KEY, "someValue");
     const initialLength = history.length;
     store.del(KEY);
+    expect(history.length).toBe(initialLength + 1);
+  });
+
+  test("PUSH will increment history length when set multiple", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
+    const initialLength = history.length;
+    store.set({
+      str: "someString",
+      bool: true,
+      obj: {
+        val: "innerValue"
+      }
+    });
+    expect(history.length).toBe(initialLength + 1);
+  });
+
+  test("PUSH will increment history length when del multiple", () => {
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
+    store.set({
+      str: "someString",
+      bool: true,
+      obj: {
+        val: "innerValue"
+      }
+    });
+    const initialLength = history.length;
+    store.del(["str", "bool", "obj"]);
     expect(history.length).toBe(initialLength + 1);
   });
 });
