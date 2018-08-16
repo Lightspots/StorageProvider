@@ -5,11 +5,11 @@ let storage: Storage;
 
 const KEY = "abc";
 
-function url() {
+function url(hash: string = "") {
   const protocol = window.location.protocol;
   const host = window.location.host;
   const path = window.location.pathname;
-  return `${protocol}//${host}${path}`;
+  return `${protocol}//${host}${path}${hash}`;
 }
 
 beforeEach(() => {
@@ -338,5 +338,20 @@ describe("HistoryMode is handled correctly", () => {
     const initialLength = history.length;
     store.del(["str", "bool", "obj"]);
     expect(history.length).toBe(initialLength + 1);
+  });
+});
+
+describe("Url is builded correctly", () => {
+  test("hash is not removed in push mode", () => {
+    history.replaceState(null, "", url("#fooBar"));
+    const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
+    store.set("key", "value");
+    expect(location.href).toBe(`${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`);
+  });
+  test("hash is not removed in replace mode", () => {
+    history.replaceState(null, "", url("#fooBar"));
+    const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
+    store.set("key", "value");
+    expect(location.href).toBe(`${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`);
   });
 });
