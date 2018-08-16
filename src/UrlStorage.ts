@@ -80,12 +80,13 @@ export class UrlStorage extends AbstractStorage {
     const protocol = window.location.protocol;
     const host = window.location.host;
     const path = window.location.pathname;
+    const hash = window.location.hash;
     const paramsArray: string[] = [];
     for (const k of Object.keys(params)) {
       paramsArray.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
     }
     const joinedParams = this.join(...paramsArray);
-    return `${protocol}//${host}${path}${joinedParams}`;
+    return `${protocol}//${host}${path}${joinedParams}${hash}`;
   }
 
 }
