@@ -1,4 +1,4 @@
-import { Storage } from "./Storage";
+import { Storage } from "../Storage";
 
 export abstract class AbstractStorage implements Storage {
   protected readonly prefix: string | undefined;
