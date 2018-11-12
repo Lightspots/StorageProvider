@@ -62,4 +62,14 @@ export interface Storage {
    * @param {string} key the key of the value to delete.
    */
   del(key: string | string[]);
+
+  /**
+   * @returns the size of this storage. Only keys matching the prefix are considered.
+   */
+  size(): number;
+
+  /**
+   * @returns true if this storage is empty, otherwise false. Only keys matching the prefix are considered.
+   */
+  isEmpty(): boolean;
 }

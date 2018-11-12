@@ -1,7 +1,7 @@
-import { Storage } from "./Storage";
+import { Storage } from "../Storage";
 
 export abstract class AbstractStorage implements Storage {
-  private readonly prefix: string | undefined;
+  protected readonly prefix: string | undefined;
 
   protected constructor(prefix?: string) {
     this.prefix = prefix;
@@ -57,6 +57,12 @@ export abstract class AbstractStorage implements Storage {
 
   public abstract set(key: string, value: any);
   public abstract set(keyValueMap: { [index: string]: any });
+
+  public abstract size(): number;
+
+  public isEmpty(): boolean {
+    return this.size() === 0;
+  }
 
   protected concat(key: string): string {
     if (this.prefix) {

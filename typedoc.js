@@ -1,0 +1,13 @@
+module.exports = {
+  out: './docs/',
+
+  includes: './',
+  exclude: [
+    '**/internal/**/*'
+  ],
+
+  mode: 'file',
+  excludeExternals: true,
+  excludeNotExported: true,
+  excludePrivate: true
+};

@@ -1,8 +1,8 @@
 import { HistoryMode } from "./HistoryMode";
-import { LocalStorage } from "./LocalStorage";
-import { SessionStorage } from "./SessionStorage";
+import { LocalStorage } from "./internal/LocalStorage";
+import { SessionStorage } from "./internal/SessionStorage";
+import { UrlStorage } from "./internal/UrlStorage";
 import { Storage } from "./Storage";
-import { UrlStorage } from "./UrlStorage";
 
 export class StorageProvider {
 

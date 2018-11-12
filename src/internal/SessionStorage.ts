@@ -34,4 +34,19 @@ export class SessionStorage extends AbstractStorage {
     }
   }
 
+  public size(): number {
+    let count = 0;
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i)!;
+      if (this.prefix) {
+        if (key.indexOf(this.prefix) === 0) {
+          count++;
+        }
+      } else {
+        count++;
+      }
+    }
+    return count;
+  }
+
 }

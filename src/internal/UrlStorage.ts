@@ -1,5 +1,5 @@
 import { AbstractStorage } from "./AbstractStorage";
-import { HistoryMode } from "./HistoryMode";
+import { HistoryMode } from "../HistoryMode";
 
 export class UrlStorage extends AbstractStorage {
   private readonly mode: HistoryMode;
@@ -37,6 +37,14 @@ export class UrlStorage extends AbstractStorage {
       throw new Error("Either specify key, value or an object containing multiple key/value pairs");
     }
     this.updateUrl(currentParams);
+  }
+
+  public size(): number {
+    let keys = Object.keys(this.getQueryValues());
+    if (this.prefix) {
+      keys = keys.filter((it) => it.indexOf(this.prefix!) === 0);
+    }
+    return keys.length;
   }
 
   private updateUrl(params: { [index: string]: string }) {
