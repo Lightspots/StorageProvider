@@ -24,3 +24,5 @@ storage.set("KEY", "a special value");
 storage.getAsString("KEY"); // returns "a special value"
 storage.getAsNumber("KEY"); // returns undefined
 ```
+
+For details see [api doc](https://grisu118.github.io/StorageProvider/index.html)
