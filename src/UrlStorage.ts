@@ -39,6 +39,14 @@ export class UrlStorage extends AbstractStorage {
     this.updateUrl(currentParams);
   }
 
+  public size(): number {
+    let keys = Object.keys(this.getQueryValues());
+    if (this.prefix) {
+      keys = keys.filter((it) => it.indexOf(this.prefix!) === 0);
+    }
+    return keys.length;
+  }
+
   private updateUrl(params: { [index: string]: string }) {
     switch (this.mode) {
       case HistoryMode.REPLACE:

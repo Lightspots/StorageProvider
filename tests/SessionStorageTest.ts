@@ -259,3 +259,31 @@ describe("get* of non existent key returns undefined", () => {
     expect(storage.getAsArray(KEY)).toBe(undefined);
   });
 });
+
+describe("size and isEmpty works returns correct values", () => {
+  test("empty store returns empty", () => {
+    expect(storage.isEmpty()).toBe(true);
+  });
+  test("empty store size is zero", () => {
+    expect(storage.size()).toBe(0);
+  });
+  test("non empty store returns non empty", () => {
+    storage.set("some_key", "Value");
+    expect(storage.isEmpty()).toBe(false);
+  });
+  test("isEmpty only considers only keys with matching prefix", () => {
+    const rootStorage = StorageProvider.sessionStorage();
+    rootStorage.set("other_key", "otherVal");
+
+    expect(storage.isEmpty()).toBe(true);
+    expect(rootStorage.isEmpty()).toBe(false);
+  });
+  test("size only considers only keys with matching prefix", () => {
+    const rootStorage = StorageProvider.sessionStorage();
+    storage.set("some_key", "Value");
+    rootStorage.set("other_key", "otherVal");
+
+    expect(storage.size()).toBe(1);
+    expect(rootStorage.size()).toBe(2);
+  });
+});
