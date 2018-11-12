@@ -1,5 +1,5 @@
-import { AbstractStorage } from "./AbstractStorage";
 import { HistoryMode } from "../HistoryMode";
+import { AbstractStorage } from "./AbstractStorage";
 
 export class UrlStorage extends AbstractStorage {
   private readonly mode: HistoryMode;
