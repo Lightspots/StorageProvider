@@ -1,13 +1,7 @@
 var typedoc = typedoc || {};
 typedoc.search = typedoc.search || {};
 typedoc.search.data = {
-  "kinds": {
-    "4": "Enumeration",
-    "16": "Enumeration member",
-    "128": "Class",
-    "256": "Interface",
-    "2048": "Method"
-  },
+  "kinds": { "4": "Enumeration", "16": "Enumeration member", "128": "Class", "256": "Interface", "2048": "Method" },
   "rows": [{
     "id": 0,
     "kind": 4,
