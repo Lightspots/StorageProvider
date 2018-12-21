@@ -354,6 +354,14 @@ describe("Url is builded correctly", () => {
     store.set("key", "value");
     expect(location.href).toBe(`${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`);
   });
+  test("plus is encoded as %2B and spaces as %20", () => {
+    storage.set("a key+val", "a value+key");
+    expectKeyValue("test_a%20key%2Bval", "a%20value%2Bkey");
+  });
+  test("plus is decoded as space", () => {
+    history.replaceState(null, "", `${url()}?test_a%20key%2Bval+plus=a%20value%2Bkey+plus`);
+    expect(storage.get("a key+val plus")).toBe("a value+key plus");
+  });
 });
 
 describe("size and isEmpty works returns correct values", () => {

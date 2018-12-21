@@ -64,7 +64,7 @@ export class UrlStorage extends AbstractStorage {
     for (const p of params) {
       const pair = p.split("=");
       if (pair.length === 2) {
-        returnValue[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        returnValue[this.decodeComponent(pair[0])] = this.decodeComponent(pair[1]);
       }
     }
     return returnValue;
@@ -95,6 +95,10 @@ export class UrlStorage extends AbstractStorage {
     }
     const joinedParams = this.join(...paramsArray);
     return `${protocol}//${host}${path}${joinedParams}${hash}`;
+  }
+
+  private decodeComponent(component: string): string {
+    return decodeURIComponent(component.replace(/\+/g, "%20"));
   }
 
 }
