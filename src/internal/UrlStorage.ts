@@ -9,7 +9,7 @@ export class UrlStorage extends AbstractStorage {
     this.mode = mode;
   }
 
-  public del(key: string | string[]) {
+  public del(key: string | string[]): void {
     const currentParams = this.getQueryValues();
     if (Array.isArray(key)) {
       for (const k of key) {
@@ -25,7 +25,7 @@ export class UrlStorage extends AbstractStorage {
     return this.getQueryValues()[this.concat(key)];
   }
 
-  public set(key: string | { [index: string]: any }, value?: any) {
+  public set(key: string | { [index: string]: any }, value?: any): void {
     const currentParams = this.getQueryValues();
     if (typeof key === "string" && value !== undefined) {
       currentParams[this.concat(key)] = this.prepareValue(value);
@@ -34,7 +34,9 @@ export class UrlStorage extends AbstractStorage {
         currentParams[this.concat(k)] = this.prepareValue(key[k]);
       }
     } else {
-      throw new Error("Either specify key, value or an object containing multiple key/value pairs");
+      throw new Error(
+        "Either specify key, value or an object containing multiple key/value pairs"
+      );
     }
     this.updateUrl(currentParams);
   }
@@ -47,7 +49,7 @@ export class UrlStorage extends AbstractStorage {
     return keys.length;
   }
 
-  private updateUrl(params: { [index: string]: string }) {
+  private updateUrl(params: { [index: string]: string }): void {
     switch (this.mode) {
       case HistoryMode.REPLACE:
         history.replaceState(null, "", this.setParams(params));
@@ -64,7 +66,9 @@ export class UrlStorage extends AbstractStorage {
     for (const p of params) {
       const pair = p.split("=");
       if (pair.length === 2) {
-        returnValue[this.decodeComponent(pair[0])] = this.decodeComponent(pair[1]);
+        returnValue[this.decodeComponent(pair[0])] = this.decodeComponent(
+          pair[1]
+        );
       }
     }
     return returnValue;
@@ -84,14 +88,16 @@ export class UrlStorage extends AbstractStorage {
     return queryString.substring(0, queryString.length - 1);
   }
 
-  private setParams(params: { [index: string]: string }) {
+  private setParams(params: { [index: string]: string }): string {
     const protocol = window.location.protocol;
     const host = window.location.host;
     const path = window.location.pathname;
     const hash = window.location.hash;
     const paramsArray: string[] = [];
     for (const k of Object.keys(params)) {
-      paramsArray.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
+      paramsArray.push(
+        `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`
+      );
     }
     const joinedParams = this.join(...paramsArray);
     return `${protocol}//${host}${path}${joinedParams}${hash}`;
@@ -100,5 +106,4 @@ export class UrlStorage extends AbstractStorage {
   private decodeComponent(component: string): string {
     return decodeURIComponent(component.replace(/\+/g, "%20"));
   }
-
 }

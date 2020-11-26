@@ -27,7 +27,7 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  public getAsObject(key: string): object | undefined {
+  public getAsObject(key: string): Record<string, unknown> | undefined {
     const s = this.get(key);
     if (s) {
       try {
@@ -51,12 +51,12 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  public abstract del(key: string | string[]);
+  public abstract del(key: string | string[]): void;
 
   public abstract get(key: string): string | undefined;
 
-  public abstract set(key: string, value: any);
-  public abstract set(keyValueMap: { [index: string]: any });
+  public abstract set(key: string, value: any): void;
+  public abstract set(keyValueMap: { [index: string]: any }): void;
 
   public abstract size(): number;
 
@@ -84,5 +84,4 @@ export abstract class AbstractStorage implements Storage {
         throw new Error("Invalid type of value");
     }
   }
-
 }

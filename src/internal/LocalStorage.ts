@@ -1,12 +1,11 @@
 import { AbstractStorage } from "./AbstractStorage";
 
 export class LocalStorage extends AbstractStorage {
-
   public constructor(prefix?: string) {
     super(prefix);
   }
 
-  public del(key: string | string[]) {
+  public del(key: string | string[]): void {
     if (Array.isArray(key)) {
       key.forEach((k) => localStorage.removeItem(this.concat(k)));
     } else {
@@ -15,14 +14,16 @@ export class LocalStorage extends AbstractStorage {
   }
 
   public get(key: string): string | undefined {
-    let value: string | undefined | null = localStorage.getItem(this.concat(key));
+    let value: string | undefined | null = localStorage.getItem(
+      this.concat(key)
+    );
     if (value === null) {
       value = undefined;
     }
     return value;
   }
 
-  public set(key: string | { [index: string]: any }, value?: any) {
+  public set(key: string | { [index: string]: any }, value?: any): void {
     if (typeof key === "string" && value !== undefined) {
       localStorage.setItem(this.concat(key), this.prepareValue(value));
     } else if (typeof key === "object") {
@@ -30,7 +31,9 @@ export class LocalStorage extends AbstractStorage {
         localStorage.setItem(this.concat(k), this.prepareValue(key[k]));
       }
     } else {
-      throw new Error("Either specify key, value or an object containing multiple key/value pairs");
+      throw new Error(
+        "Either specify key, value or an object containing multiple key/value pairs"
+      );
     }
   }
 
@@ -48,5 +51,4 @@ export class LocalStorage extends AbstractStorage {
     }
     return count;
   }
-
 }

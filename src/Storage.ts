@@ -5,14 +5,14 @@ export interface Storage {
    * @param {string} key the key where to save the value
    * @param value the value to store.
    */
-  set(key: string, value: any);
+  set(key: string, value: any): void;
 
   /**
    * Sets the given key value pairs into the storage.
    * This is considered as single transaction, in stores with transactions.
    * @param {object} keyValueMap a object with multiple key value pairs to write into the storage.
    */
-  set(keyValueMap: { [index: string]: any });
+  set(keyValueMap: { [index: string]: any }): void;
 
   /**
    * Returns the value for the given key as string.
@@ -41,7 +41,7 @@ export interface Storage {
    * @param {string} key the key of the value to access.
    * @returns {object | undefined} the object if JSON.parse is able to read it, otherwise undefined.
    */
-  getAsObject(key: string): object | undefined;
+  getAsObject(key: string): Record<string, unknown> | undefined;
 
   /**
    * Uses same logic as {@link getAsObject}. Use {@link getAsObject} for other arrays.
