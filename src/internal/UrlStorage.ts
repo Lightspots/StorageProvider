@@ -1,5 +1,6 @@
 import { HistoryMode } from "../HistoryMode";
 import { AbstractStorage } from "./AbstractStorage";
+import { StorageValue } from "../Storage";
 
 export class UrlStorage extends AbstractStorage {
   private readonly mode: HistoryMode;
@@ -25,7 +26,10 @@ export class UrlStorage extends AbstractStorage {
     return this.getQueryValues()[this.concat(key)];
   }
 
-  public set(key: string | { [index: string]: any }, value?: any): void {
+  public set(
+    key: string | { [index: string]: StorageValue | StorageValue[] },
+    value?: StorageValue | StorageValue[]
+  ): void {
     const currentParams = this.getQueryValues();
     if (typeof key === "string" && value !== undefined) {
       currentParams[this.concat(key)] = this.prepareValue(value);
@@ -43,8 +47,9 @@ export class UrlStorage extends AbstractStorage {
 
   public size(): number {
     let keys = Object.keys(this.getQueryValues());
-    if (this.prefix) {
-      keys = keys.filter((it) => it.indexOf(this.prefix!) === 0);
+    const p = this.prefix;
+    if (p) {
+      keys = keys.filter((it) => it.indexOf(p) === 0);
     }
     return keys.length;
   }

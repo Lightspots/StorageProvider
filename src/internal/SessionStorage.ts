@@ -1,4 +1,5 @@
 import { AbstractStorage } from "./AbstractStorage";
+import { StorageValue } from "../Storage";
 
 export class SessionStorage extends AbstractStorage {
   public constructor(prefix?: string) {
@@ -23,7 +24,10 @@ export class SessionStorage extends AbstractStorage {
     return value;
   }
 
-  public set(key: string | { [index: string]: any }, value?: any): void {
+  public set(
+    key: string | { [index: string]: StorageValue | StorageValue[] },
+    value?: StorageValue | StorageValue[]
+  ): void {
     if (typeof key === "string" && value !== undefined) {
       sessionStorage.setItem(this.concat(key), this.prepareValue(value));
     } else if (typeof key === "object") {
@@ -40,9 +44,9 @@ export class SessionStorage extends AbstractStorage {
   public size(): number {
     let count = 0;
     for (let i = 0; i < sessionStorage.length; i++) {
-      const key = sessionStorage.key(i)!;
+      const key = sessionStorage.key(i);
       if (this.prefix) {
-        if (key.indexOf(this.prefix) === 0) {
+        if (key?.indexOf(this.prefix) === 0) {
           count++;
         }
       } else {

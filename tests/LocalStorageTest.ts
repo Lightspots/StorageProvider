@@ -18,7 +18,10 @@ describe("key concatenation works corretly", () => {
   });
   test("on set", () => {
     storage.set(KEY, "someValue");
-    expect(localStorage.setItem).toHaveBeenLastCalledWith("test_abc", "someValue");
+    expect(localStorage.setItem).toHaveBeenLastCalledWith(
+      "test_abc",
+      "someValue"
+    );
   });
   test("on del", () => {
     storage.del(KEY);
@@ -49,12 +52,19 @@ describe("set does correctly serialize values of type", () => {
 
   test("object", () => {
     storage.set(KEY, { name: "Jane Doe" });
-    expect(localStorage.__STORE__["test_" + KEY]).toBe("{\"name\":\"Jane Doe\"}");
+    expect(localStorage.__STORE__["test_" + KEY]).toBe('{"name":"Jane Doe"}');
   });
 
-  test("array", () => {
+  test("string[]", () => {
     storage.set(KEY, ["eins", "zwei"]);
-    expect(localStorage.__STORE__["test_" + KEY]).toBe("[\"eins\",\"zwei\"]");
+    expect(localStorage.__STORE__["test_" + KEY]).toBe('["eins","zwei"]');
+  });
+
+  test("object[]", () => {
+    storage.set(KEY, [{ name: "Jane Doe" }, { name: "John Doe" }]);
+    expect(localStorage.__STORE__["test_" + KEY]).toBe(
+      `[{"name":"Jane Doe"},{"name":"John Doe"}]`
+    );
   });
 
   test("multiple types in one call", () => {
@@ -62,12 +72,12 @@ describe("set does correctly serialize values of type", () => {
       str: "someString",
       bool: true,
       obj: {
-        val: "innerValue"
-      }
+        val: "innerValue",
+      },
     });
     expect(localStorage.__STORE__.test_str).toBe("someString");
     expect(localStorage.__STORE__.test_bool).toBe("true");
-    expect(localStorage.__STORE__.test_obj).toBe("{\"val\":\"innerValue\"}");
+    expect(localStorage.__STORE__.test_obj).toBe('{"val":"innerValue"}');
   });
 });
 
@@ -139,12 +149,12 @@ describe("get value of type object as ", () => {
   const object = { test: "someValue" };
   test("any returns value as string", () => {
     storage.set(KEY, object);
-    expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
+    expect(storage.get(KEY)).toBe('{"test":"someValue"}');
   });
 
   test("string returns value as string", () => {
     storage.set(KEY, object);
-    expect(storage.getAsString(KEY)).toBe("{\"test\":\"someValue\"}");
+    expect(storage.getAsString(KEY)).toBe('{"test":"someValue"}');
   });
 
   test("number returns undefined", () => {
@@ -172,12 +182,12 @@ describe("get value of type array as ", () => {
   const array = ["eins", "zwei"];
   test("any returns value as string", () => {
     storage.set(KEY, array);
-    expect(storage.get(KEY)).toBe("[\"eins\",\"zwei\"]");
+    expect(storage.get(KEY)).toBe('["eins","zwei"]');
   });
 
   test("string returns value as string", () => {
     storage.set(KEY, array);
-    expect(storage.getAsString(KEY)).toBe("[\"eins\",\"zwei\"]");
+    expect(storage.getAsString(KEY)).toBe('["eins","zwei"]');
   });
 
   test("number returns undefined", () => {

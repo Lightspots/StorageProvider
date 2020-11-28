@@ -1,4 +1,4 @@
-import { Storage } from "../Storage";
+import { Storage, StorageValue } from "../Storage";
 
 export abstract class AbstractStorage implements Storage {
   protected readonly prefix: string | undefined;
@@ -42,7 +42,7 @@ export abstract class AbstractStorage implements Storage {
     return undefined;
   }
 
-  public getAsArray(key: string): string[] | undefined {
+  public getAsArray(key: string): StorageValue[] | undefined {
     const o = this.getAsObject(key);
     if (o && Array.isArray(o)) {
       return o;
@@ -55,8 +55,10 @@ export abstract class AbstractStorage implements Storage {
 
   public abstract get(key: string): string | undefined;
 
-  public abstract set(key: string, value: any): void;
-  public abstract set(keyValueMap: { [index: string]: any }): void;
+  public abstract set(key: string, value: StorageValue | StorageValue[]): void;
+  public abstract set(keyValueMap: {
+    [index: string]: StorageValue | StorageValue[];
+  }): void;
 
   public abstract size(): number;
 
@@ -72,7 +74,7 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  protected prepareValue(value: any): string {
+  protected prepareValue(value: StorageValue | StorageValue[]): string {
     switch (typeof value) {
       case "boolean":
       case "number":

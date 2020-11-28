@@ -1,3 +1,5 @@
+export type StorageValue = string | number | boolean | Record<string, unknown>;
+
 export interface Storage {
   /**
    * Sets the given value with the given key into the storage.
@@ -5,14 +7,14 @@ export interface Storage {
    * @param {string} key the key where to save the value
    * @param value the value to store.
    */
-  set(key: string, value: any): void;
+  set(key: string, value: StorageValue | StorageValue[]): void;
 
   /**
    * Sets the given key value pairs into the storage.
    * This is considered as single transaction, in stores with transactions.
    * @param {object} keyValueMap a object with multiple key value pairs to write into the storage.
    */
-  set(keyValueMap: { [index: string]: any }): void;
+  set(keyValueMap: { [index: string]: StorageValue | StorageValue[] }): void;
 
   /**
    * Returns the value for the given key as string.
@@ -44,11 +46,11 @@ export interface Storage {
   getAsObject(key: string): Record<string, unknown> | undefined;
 
   /**
-   * Uses same logic as {@link getAsObject}. Use {@link getAsObject} for other arrays.
+   * Uses same logic as {@link getAsObject}.
    * @param {string} key the key of the value to access.
-   * @returns {string[] | undefined} the string[] if the stored value is readable as string[], otherwise undefined.
+   * @returns {StorageValue[] | undefined} the StorageValue[] if the stored value is readable as StorageValue[], otherwise undefined.
    */
-  getAsArray(key: string): string[] | undefined;
+  getAsArray(key: string): StorageValue[] | undefined;
 
   /**
    * Similar to {@link getAsString}
