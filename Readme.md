@@ -1,6 +1,6 @@
 # Storage Provider
 
-[![Build Status](https://github.com/Lightspots>/StorageProvider>/workflows/Node.js+CI/badge.svg)](https://github.com/Lightspots/StorageProvider/actions?query=workflow%3A%22Node.js+CI%22)
+[![Build Status](https://github.com/Lightspots/StorageProvider/workflows/Node.js%20CI/badge.svg)](https://github.com/Lightspots/StorageProvider/actions?query=workflow%3A%22Node.js+CI%22)
 [![codecov](https://codecov.io/gh/Lightspots/StorageProvider/branch/master/graph/badge.svg)](https://codecov.io/gh/Lightspots/StorageProvider)
 [![npm](https://img.shields.io/npm/v/@lightspots/storageprovider.svg)](https://www.npmjs.com/package/@lightspots/storageprovider)
 [![license](https://img.shields.io/github/license/lightspots/storageprovider.svg)](LICENSE)
