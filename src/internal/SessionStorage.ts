@@ -1,12 +1,12 @@
 import { AbstractStorage } from "./AbstractStorage";
+import { StorageValue } from "../Storage";
 
 export class SessionStorage extends AbstractStorage {
-
   public constructor(prefix?: string) {
     super(prefix);
   }
 
-  public del(key: string | string[]) {
+  public del(key: string | string[]): void {
     if (Array.isArray(key)) {
       key.forEach((k) => sessionStorage.removeItem(this.concat(k)));
     } else {
@@ -15,14 +15,19 @@ export class SessionStorage extends AbstractStorage {
   }
 
   public get(key: string): string | undefined {
-    let value: string | undefined | null = sessionStorage.getItem(this.concat(key));
+    let value: string | undefined | null = sessionStorage.getItem(
+      this.concat(key)
+    );
     if (value === null) {
       value = undefined;
     }
     return value;
   }
 
-  public set(key: string | { [index: string]: any }, value?: any) {
+  public set(
+    key: string | { [index: string]: StorageValue | StorageValue[] },
+    value?: StorageValue | StorageValue[]
+  ): void {
     if (typeof key === "string" && value !== undefined) {
       sessionStorage.setItem(this.concat(key), this.prepareValue(value));
     } else if (typeof key === "object") {
@@ -30,16 +35,18 @@ export class SessionStorage extends AbstractStorage {
         sessionStorage.setItem(this.concat(k), this.prepareValue(key[k]));
       }
     } else {
-      throw new Error("Either specify key, value or an object containing multiple key/value pairs");
+      throw new Error(
+        "Either specify key, value or an object containing multiple key/value pairs"
+      );
     }
   }
 
   public size(): number {
     let count = 0;
     for (let i = 0; i < sessionStorage.length; i++) {
-      const key = sessionStorage.key(i)!;
+      const key = sessionStorage.key(i);
       if (this.prefix) {
-        if (key.indexOf(this.prefix) === 0) {
+        if (key?.indexOf(this.prefix) === 0) {
           count++;
         }
       } else {
@@ -48,5 +55,4 @@ export class SessionStorage extends AbstractStorage {
     }
     return count;
   }
-
 }

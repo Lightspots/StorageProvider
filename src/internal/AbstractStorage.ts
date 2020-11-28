@@ -1,4 +1,4 @@
-import { Storage } from "../Storage";
+import { Storage, StorageValue } from "../Storage";
 
 export abstract class AbstractStorage implements Storage {
   protected readonly prefix: string | undefined;
@@ -27,7 +27,7 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  public getAsObject(key: string): object | undefined {
+  public getAsObject(key: string): Record<string, unknown> | undefined {
     const s = this.get(key);
     if (s) {
       try {
@@ -42,7 +42,7 @@ export abstract class AbstractStorage implements Storage {
     return undefined;
   }
 
-  public getAsArray(key: string): string[] | undefined {
+  public getAsArray(key: string): StorageValue[] | undefined {
     const o = this.getAsObject(key);
     if (o && Array.isArray(o)) {
       return o;
@@ -51,12 +51,14 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  public abstract del(key: string | string[]);
+  public abstract del(key: string | string[]): void;
 
   public abstract get(key: string): string | undefined;
 
-  public abstract set(key: string, value: any);
-  public abstract set(keyValueMap: { [index: string]: any });
+  public abstract set(key: string, value: StorageValue | StorageValue[]): void;
+  public abstract set(keyValueMap: {
+    [index: string]: StorageValue | StorageValue[];
+  }): void;
 
   public abstract size(): number;
 
@@ -72,7 +74,7 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  protected prepareValue(value: any): string {
+  protected prepareValue(value: StorageValue | StorageValue[]): string {
     switch (typeof value) {
       case "boolean":
       case "number":
@@ -84,5 +86,4 @@ export abstract class AbstractStorage implements Storage {
         throw new Error("Invalid type of value");
     }
   }
-
 }
