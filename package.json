@@ -1,5 +1,5 @@
 {
-  "name": "storageprovider",
+  "name": "@lightspots/storageprovider",
   "version": "2.0.0",
   "description": "A simple API for accessing different Storages, including LocalStorage, SessionStorage and URL get parameters",
   "main": "dist/index.js",
