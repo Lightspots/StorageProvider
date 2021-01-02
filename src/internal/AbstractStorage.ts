@@ -27,7 +27,7 @@ export abstract class AbstractStorage implements Storage {
     }
   }
 
-  public getAsObject(key: string): Record<string, unknown> | undefined {
+  public getAsRecord(key: string): Record<string, unknown> | undefined {
     const s = this.get(key);
     if (s) {
       try {
@@ -42,8 +42,20 @@ export abstract class AbstractStorage implements Storage {
     return undefined;
   }
 
+  public getAsObject<T extends Record<string, unknown>>(
+    key: string,
+    typeCheck: (o: Record<string, unknown>) => boolean = () => true
+  ): T | undefined {
+    const record = this.getAsRecord(key);
+    if (record !== undefined && typeCheck(record)) {
+      return record as T;
+    } else {
+      return undefined;
+    }
+  }
+
   public getAsArray(key: string): StorageValue[] | undefined {
-    const o = this.getAsObject(key);
+    const o = this.getAsRecord(key);
     if (o && Array.isArray(o)) {
       return o;
     } else {
