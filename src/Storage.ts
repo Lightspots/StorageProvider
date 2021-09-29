@@ -74,7 +74,7 @@ export interface Storage {
    * Deletes the given key(s) from the storage.
    * @param {string} key the key of the value to delete.
    */
-  del(key: string | string[]);
+  del(key: string | string[]): void;
 
   /**
    * @returns the size of this storage. Only keys matching the prefix are considered.

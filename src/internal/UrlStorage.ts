@@ -1,6 +1,6 @@
 import { HistoryMode } from "../HistoryMode";
-import { AbstractStorage } from "./AbstractStorage";
 import { StorageValue } from "../Storage";
+import { AbstractStorage } from "./AbstractStorage";
 
 export class UrlStorage extends AbstractStorage {
   private readonly mode: HistoryMode;
@@ -67,7 +67,7 @@ export class UrlStorage extends AbstractStorage {
   private getQueryValues(): { [index: string]: string } {
     const query = window.location.search.substring(1);
     const params = query.split("&");
-    const returnValue = {};
+    const returnValue: { [i: string]: string } = {};
     for (const p of params) {
       const pair = p.split("=");
       if (pair.length === 2) {

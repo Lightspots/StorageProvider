@@ -1,5 +1,5 @@
-import { AbstractStorage } from "./AbstractStorage";
 import { StorageValue } from "../Storage";
+import { AbstractStorage } from "./AbstractStorage";
 
 export class SessionStorage extends AbstractStorage {
   public constructor(prefix?: string) {
