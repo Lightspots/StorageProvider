@@ -1,11 +1,7 @@
 {
   "out": "./docs/",
-  "includes": "./",
-  "exclude": [
-    "**/internal/**/*"
-  ],
-  "mode": "file",
+  "entryPoints": "./src/index.ts",
+  "exclude": ["**/internal/**/*"],
   "excludeExternals": true,
-  "excludeNotExported": true,
   "excludePrivate": true
 }
