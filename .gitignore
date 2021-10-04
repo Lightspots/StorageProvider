@@ -3,6 +3,9 @@ node_modules
 .idea
 coverage
 
+# Ignore docs
+/docs
+
 # yarn
 .yarn/*
 !.yarn/patches
