@@ -11,7 +11,7 @@ beforeEach(() => {
   storage = StorageProvider.localStorage("test");
 });
 
-describe("key concatenation works corretly", () => {
+describe("key concatenation works correctly", () => {
   test("on get", () => {
     storage.get(KEY);
     expect(localStorage.getItem).toHaveBeenLastCalledWith("test_abc");
@@ -104,7 +104,7 @@ describe("get value of type string as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, "someValue");
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -136,7 +136,7 @@ describe("get value of type number as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, -25.6);
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -169,12 +169,47 @@ describe("get value of type object as ", () => {
 
   test("object returns object", () => {
     storage.set(KEY, object);
-    expect(storage.getAsObject(KEY)).toEqual(object);
+    expect(storage.getAsRecord(KEY)).toEqual(object);
   });
 
   test("array returns undefined", () => {
     storage.set(KEY, object);
     expect(storage.getAsArray(KEY)).toBe(undefined);
+  });
+});
+
+describe("get value as Object", () => {
+  interface TestObj extends Record<string, unknown> {
+    field: string;
+    age: number;
+    optional?: string;
+  }
+  const validObject: TestObj = {
+    field: "foo",
+    age: 23,
+  };
+  const invalidObject = {
+    age: 24,
+    optional: "someString",
+  };
+
+  test("valid object returns valid object", () => {
+    storage.set(KEY, validObject);
+    expect(storage.getAsObject<TestObj>(KEY)).toEqual(validObject);
+  });
+
+  test("invalid object returns invalid object, without type check", () => {
+    storage.set(KEY, invalidObject);
+    expect(storage.getAsObject<TestObj>(KEY)).toEqual(invalidObject);
+  });
+
+  test("invalid object returns undefined, with type check", () => {
+    const check = (o: Record<string, unknown>): o is TestObj => {
+      return o.field !== undefined && o.age !== undefined;
+    };
+
+    storage.set(KEY, invalidObject);
+    expect(storage.getAsObject<TestObj>(KEY, check)).toEqual(undefined);
   });
 });
 
@@ -202,7 +237,7 @@ describe("get value of type array as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, array);
-    expect(storage.getAsObject(KEY)).toEqual(array);
+    expect(storage.getAsRecord(KEY)).toEqual(array);
   });
 
   test("array returns array", () => {
@@ -235,7 +270,7 @@ describe("get value of type boolean as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, value);
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -261,8 +296,8 @@ describe("get* of non existent key returns undefined", () => {
     expect(storage.getAsBoolean(KEY)).toBe(undefined);
   });
 
-  test("getAsObject", () => {
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+  test("getAsRecord", () => {
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("getAsArray", () => {

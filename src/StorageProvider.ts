@@ -5,7 +5,6 @@ import { UrlStorage } from "./internal/UrlStorage";
 import { Storage } from "./Storage";
 
 export class StorageProvider {
-
   /**
    * Returns a {@link Storage} which will use the localstorage as storage backend.
    * @param {string} prefix A prefix for all keys managed over this storage instance.
@@ -30,8 +29,10 @@ export class StorageProvider {
    * @param {HistoryMode} mode The mode of how we update the history.
    * @returns {Storage} The storage.
    */
-  public static urlStorage(prefix?: string, mode: HistoryMode = HistoryMode.REPLACE): Storage {
+  public static urlStorage(
+    prefix?: string,
+    mode: HistoryMode = HistoryMode.REPLACE
+  ): Storage {
     return new UrlStorage(prefix, mode);
   }
-
 }

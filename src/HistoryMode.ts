@@ -3,5 +3,5 @@
  */
 export enum HistoryMode {
   REPLACE = "REPLACE",
-  PUSH = "PUSH"
+  PUSH = "PUSH",
 }

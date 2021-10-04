@@ -5,7 +5,7 @@ let storage: Storage;
 
 const KEY = "abc";
 
-function url(hash: string = "") {
+function url(hash = "") {
   const protocol = window.location.protocol;
   const host = window.location.host;
   const path = window.location.pathname;
@@ -23,7 +23,11 @@ function expectKeyValue(key: string, value: string) {
 
 describe("key concatenation works correctly", () => {
   test("on get", () => {
-    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
+    history.replaceState(
+      null,
+      "",
+      `${url()}?test_abc=someValue&test_efg=otherValue`
+    );
     expect(storage.get(KEY)).toEqual("someValue");
   });
   test("on set", () => {
@@ -31,12 +35,20 @@ describe("key concatenation works correctly", () => {
     expectKeyValue("test_" + KEY, "someValue");
   });
   test("on del", () => {
-    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
+    history.replaceState(
+      null,
+      "",
+      `${url()}?test_abc=someValue&test_efg=otherValue`
+    );
     storage.del(KEY);
     expect(window.location.search).toEqual("?test_efg=otherValue");
   });
   test("on del multiple", () => {
-    history.replaceState(null, "", `${url()}?test_abc=someValue&test_efg=otherValue`);
+    history.replaceState(
+      null,
+      "",
+      `${url()}?test_abc=someValue&test_efg=otherValue`
+    );
     storage.del([KEY, "efg"]);
     expect(window.location.search).toEqual("");
   });
@@ -83,8 +95,8 @@ describe("set does correctly serialize values of type", () => {
       str: "someString",
       bool: true,
       obj: {
-        val: "innerValue"
-      }
+        val: "innerValue",
+      },
     });
     const keyValues = window.location.search.substring(1).split("&");
     expect(keyValues).toContain("test_str=someString");
@@ -116,7 +128,7 @@ describe("get value of type string as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, "someValue");
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -148,7 +160,7 @@ describe("get value of type number as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, -25.6);
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -161,12 +173,12 @@ describe("get value of type object as ", () => {
   const object = { test: "someValue" };
   test("any returns value as string", () => {
     storage.set(KEY, object);
-    expect(storage.get(KEY)).toBe("{\"test\":\"someValue\"}");
+    expect(storage.get(KEY)).toBe('{"test":"someValue"}');
   });
 
   test("string returns value as string", () => {
     storage.set(KEY, object);
-    expect(storage.getAsString(KEY)).toBe("{\"test\":\"someValue\"}");
+    expect(storage.getAsString(KEY)).toBe('{"test":"someValue"}');
   });
 
   test("number returns undefined", () => {
@@ -181,7 +193,7 @@ describe("get value of type object as ", () => {
 
   test("object returns object", () => {
     storage.set(KEY, object);
-    expect(storage.getAsObject(KEY)).toEqual(object);
+    expect(storage.getAsRecord(KEY)).toEqual(object);
   });
 
   test("array returns undefined", () => {
@@ -190,16 +202,51 @@ describe("get value of type object as ", () => {
   });
 });
 
+describe("get value as Object", () => {
+  interface TestObj extends Record<string, unknown> {
+    field: string;
+    age: number;
+    optional?: string;
+  }
+  const validObject: TestObj = {
+    field: "foo",
+    age: 23,
+  };
+  const invalidObject = {
+    age: 24,
+    optional: "someString",
+  };
+
+  test("valid object returns valid object", () => {
+    storage.set(KEY, validObject);
+    expect(storage.getAsObject<TestObj>(KEY)).toEqual(validObject);
+  });
+
+  test("invalid object returns invalid object, without type check", () => {
+    storage.set(KEY, invalidObject);
+    expect(storage.getAsObject<TestObj>(KEY)).toEqual(invalidObject);
+  });
+
+  test("invalid object returns undefined, with type check", () => {
+    const check = (o: Record<string, unknown>): o is TestObj => {
+      return o.field !== undefined && o.age !== undefined;
+    };
+
+    storage.set(KEY, invalidObject);
+    expect(storage.getAsObject<TestObj>(KEY, check)).toEqual(undefined);
+  });
+});
+
 describe("get value of type array as ", () => {
   const array = ["eins", "zwei"];
   test("any returns value as string", () => {
     storage.set(KEY, array);
-    expect(storage.get(KEY)).toBe("[\"eins\",\"zwei\"]");
+    expect(storage.get(KEY)).toBe('["eins","zwei"]');
   });
 
   test("string returns value as string", () => {
     storage.set(KEY, array);
-    expect(storage.getAsString(KEY)).toBe("[\"eins\",\"zwei\"]");
+    expect(storage.getAsString(KEY)).toBe('["eins","zwei"]');
   });
 
   test("number returns undefined", () => {
@@ -214,7 +261,7 @@ describe("get value of type array as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, array);
-    expect(storage.getAsObject(KEY)).toEqual(array);
+    expect(storage.getAsRecord(KEY)).toEqual(array);
   });
 
   test("array returns array", () => {
@@ -247,7 +294,7 @@ describe("get value of type boolean as ", () => {
 
   test("object returns undefined", () => {
     storage.set(KEY, value);
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("array returns undefined", () => {
@@ -273,8 +320,8 @@ describe("get* of non existent key returns undefined", () => {
     expect(storage.getAsBoolean(KEY)).toBe(undefined);
   });
 
-  test("getAsObject", () => {
-    expect(storage.getAsObject(KEY)).toBe(undefined);
+  test("getAsRecord", () => {
+    expect(storage.getAsRecord(KEY)).toBe(undefined);
   });
 
   test("getAsArray", () => {
@@ -320,8 +367,8 @@ describe("HistoryMode is handled correctly", () => {
       str: "someString",
       bool: true,
       obj: {
-        val: "innerValue"
-      }
+        val: "innerValue",
+      },
     });
     expect(history.length).toBe(initialLength + 1);
   });
@@ -332,8 +379,8 @@ describe("HistoryMode is handled correctly", () => {
       str: "someString",
       bool: true,
       obj: {
-        val: "innerValue"
-      }
+        val: "innerValue",
+      },
     });
     const initialLength = history.length;
     store.del(["str", "bool", "obj"]);
@@ -346,20 +393,28 @@ describe("Url is builded correctly", () => {
     history.replaceState(null, "", url("#fooBar"));
     const store = StorageProvider.urlStorage("", HistoryMode.PUSH);
     store.set("key", "value");
-    expect(location.href).toBe(`${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`);
+    expect(location.href).toBe(
+      `${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`
+    );
   });
   test("hash is not removed in replace mode", () => {
     history.replaceState(null, "", url("#fooBar"));
     const store = StorageProvider.urlStorage("", HistoryMode.REPLACE);
     store.set("key", "value");
-    expect(location.href).toBe(`${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`);
+    expect(location.href).toBe(
+      `${location.protocol}//${location.host}${location.pathname}?key=value#fooBar`
+    );
   });
   test("plus is encoded as %2B and spaces as %20", () => {
     storage.set("a key+val", "a value+key");
     expectKeyValue("test_a%20key%2Bval", "a%20value%2Bkey");
   });
   test("plus is decoded as space", () => {
-    history.replaceState(null, "", `${url()}?test_a%20key%2Bval+plus=a%20value%2Bkey+plus`);
+    history.replaceState(
+      null,
+      "",
+      `${url()}?test_a%20key%2Bval+plus=a%20value%2Bkey+plus`
+    );
     expect(storage.get("a key+val plus")).toBe("a value+key plus");
   });
 });

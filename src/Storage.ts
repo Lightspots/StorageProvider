@@ -43,7 +43,18 @@ export interface Storage {
    * @param {string} key the key of the value to access.
    * @returns {object | undefined} the object if JSON.parse is able to read it, otherwise undefined.
    */
-  getAsObject(key: string): Record<string, unknown> | undefined;
+  getAsRecord(key: string): Record<string, unknown> | undefined;
+
+  /**
+   * Returns the value for the given key as T. Uses JSON.parse for parsing and casts it to T.
+   * @param key the key of the value to access.
+   * @param typeCheck a optional function which verifies the retrieved object, if the function returns false, undefined is returned
+   * @returns the object if JSON.parse is able to read it, otherwise undefined.
+   */
+  getAsObject<T extends Record<string, unknown>>(
+    key: string,
+    typeCheck?: (o: Record<string, unknown>) => boolean
+  ): T | undefined;
 
   /**
    * Uses same logic as {@link getAsObject}.
@@ -63,7 +74,7 @@ export interface Storage {
    * Deletes the given key(s) from the storage.
    * @param {string} key the key of the value to delete.
    */
-  del(key: string | string[]);
+  del(key: string | string[]): void;
 
   /**
    * @returns the size of this storage. Only keys matching the prefix are considered.

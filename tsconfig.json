@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "strict": true,
     "module": "commonjs",
     "target": "es5",
     "declaration": true,
     "outDir": "./dist",
     "strictNullChecks": true,
+    "noImplicitOverride": true,
     "sourceMap": false
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
