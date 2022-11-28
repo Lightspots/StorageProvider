@@ -167,6 +167,11 @@ describe("get value of type number as ", () => {
     storage.set(KEY, -25.6);
     expect(storage.getAsArray(KEY)).toBe(undefined);
   });
+
+  test("zero returns zero", () => {
+    storage.set(KEY, 0);
+    expect(storage.getAsNumber(KEY)).toBe(0);
+  });
 });
 
 describe("get value of type object as ", () => {

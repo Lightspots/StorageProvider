@@ -12,7 +12,11 @@ export abstract class AbstractStorage implements Storage {
   }
 
   public getAsNumber(key: string): number | undefined {
-    return Number(this.get(key)) || undefined;
+    const value = Number(this.get(key));
+    if (Number.isNaN(value)) {
+      return undefined;
+    }
+    return value;
   }
 
   public getAsBoolean(key: string): boolean | undefined {
