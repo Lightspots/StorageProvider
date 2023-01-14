@@ -3401,9 +3401,9 @@ fsevents@^2.3.2:
   linkType: hard
 
 "jest-localstorage-mock@npm:^2.4.22":
-  version: 2.4.25
-  resolution: "jest-localstorage-mock@npm:2.4.25"
-  checksum: 83d7ec985165f6e7713c0bf6a5cb95aa0ebacbb73d1894915c7466731a7dce97d58d29a92cb9e86d619d2e47773c595f2766675020f6390b4c210909d22fdd3a
+  version: 2.4.26
+  resolution: "jest-localstorage-mock@npm:2.4.26"
+  checksum: d6871dd030f04bb59c9ef71ce22e98e15e2bc0d77755f5ed466839b891a7a7aae64b6cfc8f942cbef515981c4ff2ae26ad2ccc2f9d1b426c198d0b812ab1831f
   languageName: node
   linkType: hard
 
