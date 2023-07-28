@@ -31,7 +31,7 @@ export class StorageProvider {
    */
   public static urlStorage(
     prefix?: string,
-    mode: HistoryMode = HistoryMode.REPLACE
+    mode: HistoryMode = HistoryMode.REPLACE,
   ): Storage {
     return new UrlStorage(prefix, mode);
   }

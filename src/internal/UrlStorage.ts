@@ -28,7 +28,7 @@ export class UrlStorage extends AbstractStorage {
 
   public set(
     key: string | { [index: string]: StorageValue | StorageValue[] },
-    value?: StorageValue | StorageValue[]
+    value?: StorageValue | StorageValue[],
   ): void {
     const currentParams = this.getQueryValues();
     if (typeof key === "string" && value !== undefined) {
@@ -39,7 +39,7 @@ export class UrlStorage extends AbstractStorage {
       }
     } else {
       throw new Error(
-        "Either specify key, value or an object containing multiple key/value pairs"
+        "Either specify key, value or an object containing multiple key/value pairs",
       );
     }
     this.updateUrl(currentParams);
@@ -72,7 +72,7 @@ export class UrlStorage extends AbstractStorage {
       const pair = p.split("=");
       if (pair.length === 2) {
         returnValue[this.decodeComponent(pair[0])] = this.decodeComponent(
-          pair[1]
+          pair[1],
         );
       }
     }
@@ -101,7 +101,7 @@ export class UrlStorage extends AbstractStorage {
     const paramsArray: string[] = [];
     for (const k of Object.keys(params)) {
       paramsArray.push(
-        `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`
+        `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`,
       );
     }
     const joinedParams = this.join(...paramsArray);
