@@ -7,7 +7,7 @@ const KEY = "abc";
 
 beforeEach(() => {
   localStorage.clear();
-  jest.restoreAllMocks();
+  jest.clearAllMocks();
   storage = StorageProvider.localStorage("test");
 });
 
@@ -20,7 +20,7 @@ describe("key concatenation works correctly", () => {
     storage.set(KEY, "someValue");
     expect(localStorage.setItem).toHaveBeenLastCalledWith(
       "test_abc",
-      "someValue"
+      "someValue",
     );
   });
   test("on del", () => {
@@ -63,7 +63,7 @@ describe("set does correctly serialize values of type", () => {
   test("object[]", () => {
     storage.set(KEY, [{ name: "Jane Doe" }, { name: "John Doe" }]);
     expect(localStorage.__STORE__["test_" + KEY]).toBe(
-      `[{"name":"Jane Doe"},{"name":"John Doe"}]`
+      `[{"name":"Jane Doe"},{"name":"John Doe"}]`,
     );
   });
 
