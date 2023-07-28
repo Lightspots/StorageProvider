@@ -48,7 +48,7 @@ export abstract class AbstractStorage implements Storage {
 
   public getAsObject<T extends Record<string, unknown>>(
     key: string,
-    typeCheck: (o: Record<string, unknown>) => boolean = () => true
+    typeCheck: (o: Record<string, unknown>) => boolean = () => true,
   ): T | undefined {
     const record = this.getAsRecord(key);
     if (record !== undefined && typeCheck(record)) {

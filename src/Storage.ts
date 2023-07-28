@@ -53,7 +53,7 @@ export interface Storage {
    */
   getAsObject<T extends Record<string, unknown>>(
     key: string,
-    typeCheck?: (o: Record<string, unknown>) => boolean
+    typeCheck?: (o: Record<string, unknown>) => boolean,
   ): T | undefined;
 
   /**

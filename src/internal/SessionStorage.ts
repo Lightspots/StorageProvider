@@ -16,7 +16,7 @@ export class SessionStorage extends AbstractStorage {
 
   public get(key: string): string | undefined {
     let value: string | undefined | null = sessionStorage.getItem(
-      this.concat(key)
+      this.concat(key),
     );
     if (value === null) {
       value = undefined;
@@ -26,7 +26,7 @@ export class SessionStorage extends AbstractStorage {
 
   public set(
     key: string | { [index: string]: StorageValue | StorageValue[] },
-    value?: StorageValue | StorageValue[]
+    value?: StorageValue | StorageValue[],
   ): void {
     if (typeof key === "string" && value !== undefined) {
       sessionStorage.setItem(this.concat(key), this.prepareValue(value));
@@ -36,7 +36,7 @@ export class SessionStorage extends AbstractStorage {
       }
     } else {
       throw new Error(
-        "Either specify key, value or an object containing multiple key/value pairs"
+        "Either specify key, value or an object containing multiple key/value pairs",
       );
     }
   }
