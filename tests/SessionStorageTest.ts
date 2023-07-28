@@ -7,7 +7,7 @@ const KEY = "abc";
 
 beforeEach(() => {
   sessionStorage.clear();
-  jest.restoreAllMocks();
+  jest.clearAllMocks();
   storage = StorageProvider.sessionStorage("test");
 });
 
@@ -20,7 +20,7 @@ describe("key concatenation works correctly", () => {
     storage.set(KEY, "someValue");
     expect(sessionStorage.setItem).toHaveBeenLastCalledWith(
       "test_abc",
-      "someValue"
+      "someValue",
     );
   });
   test("on del", () => {
