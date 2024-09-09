@@ -1211,10 +1211,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/core@npm:1.10.0":
-  version: 1.10.0
-  resolution: "@shikijs/core@npm:1.10.0"
-  checksum: 8b63ca536487bf80e4e1337046dd03b33339df7b9e5d032baf1f8efc6feecefd899c57767c2bb0ceed34c2faa0248b03e4f3ebbf20eaaa5bdfed956133f3c072
+"@shikijs/core@npm:1.16.3":
+  version: 1.16.3
+  resolution: "@shikijs/core@npm:1.16.3"
+  dependencies:
+    "@shikijs/vscode-textmate": ^9.2.0
+    "@types/hast": ^3.0.4
+    oniguruma-to-js: 0.3.3
+    regex: 4.3.2
+  checksum: e9649d99866d134e2a9a237f880a5c3582f5d6263f8e14e0dbaec1ef4942f885b98a19994fc7bb7d2c3d4411390eb4928e3a1a3fa89cbb91cb38a8b743ba90fc
+  languageName: node
+  linkType: hard
+
+"@shikijs/vscode-textmate@npm:^9.2.0":
+  version: 9.2.2
+  resolution: "@shikijs/vscode-textmate@npm:9.2.2"
+  checksum: d47db82e3ab76df68fb5bba8152b9516281d2292eb54ac52ccfaef63968456d8539255f57e3b7c995f7346d436075a9bc089436bf9b032c4c39d6cd166a325ae
   languageName: node
   linkType: hard
 
@@ -1342,6 +1354,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hast@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@types/hast@npm:3.0.4"
+  dependencies:
+    "@types/unist": "*"
+  checksum: 7a973e8d16fcdf3936090fa2280f408fb2b6a4f13b42edeb5fbd614efe042b82eac68e298e556d50f6b4ad585a3a93c353e9c826feccdc77af59de8dd400d044
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -1408,6 +1429,13 @@ __metadata:
   version: 4.0.2
   resolution: "@types/tough-cookie@npm:4.0.2"
   checksum: e055556ffdaa39ad85ede0af192c93f93f986f4bd9e9426efdc2948e3e2632db3a4a584d4937dbf6d7620527419bc99e6182d3daf2b08685e710f2eda5291905
+  languageName: node
+  linkType: hard
+
+"@types/unist@npm:*":
+  version: 3.0.3
+  resolution: "@types/unist@npm:3.0.3"
+  checksum: 96e6453da9e075aaef1dc22482463898198acdc1eeb99b465e65e34303e2ec1e3b1ed4469a9118275ec284dc98019f63c3f5d49422f0e4ac707e5ab90fb3b71a
   languageName: node
   linkType: hard
 
@@ -4617,6 +4645,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"oniguruma-to-js@npm:0.3.3":
+  version: 0.3.3
+  resolution: "oniguruma-to-js@npm:0.3.3"
+  checksum: e2490d22de5ec5356e4dd160c5d3bbb550cbc0b52e943576eaee014df7ea9fba566d7a19e901c88d7f6bc1c779574c40237fc8fa13bbc939eef5060271e3d34e
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.8.1":
   version: 0.8.3
   resolution: "optionator@npm:0.8.3"
@@ -4951,6 +4986,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"regex@npm:4.3.2":
+  version: 4.3.2
+  resolution: "regex@npm:4.3.2"
+  checksum: 9b1009f948825a66d81478b54acc60dcf4f7f01905a951b545409873f2ef655a99f5d4dc1448c666ccb06fd95d09cdb010c6c9569ff7c126f7c2580817db26de
+  languageName: node
+  linkType: hard
+
 "require-directory@npm:^2.1.1":
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
@@ -5144,12 +5186,14 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"shiki@npm:^1.9.1":
-  version: 1.10.0
-  resolution: "shiki@npm:1.10.0"
+"shiki@npm:^1.16.2":
+  version: 1.16.3
+  resolution: "shiki@npm:1.16.3"
   dependencies:
-    "@shikijs/core": 1.10.0
-  checksum: 457f771b7583c0a95fef2c49ad506d5d89521322b15fca1da02068b74ccb911e2a5f2e581a1e863d89cd86f84e99c725172194d924825db267de7a3f7d264bc6
+    "@shikijs/core": 1.16.3
+    "@shikijs/vscode-textmate": ^9.2.0
+    "@types/hast": ^3.0.4
+  checksum: 1ee192665d4b9c1f8246d5d7e3f9a2dd9d60796ec29199093e96f96f9615556be07b3005c864d2813a0114b924493305b5889ad451507616571cf3b8cff88097
   languageName: node
   linkType: hard
 
@@ -5628,19 +5672,19 @@ resolve@^1.20.0:
   linkType: hard
 
 "typedoc@npm:^0.26.3":
-  version: 0.26.6
-  resolution: "typedoc@npm:0.26.6"
+  version: 0.26.7
+  resolution: "typedoc@npm:0.26.7"
   dependencies:
     lunr: ^2.3.9
     markdown-it: ^14.1.0
     minimatch: ^9.0.5
-    shiki: ^1.9.1
-    yaml: ^2.4.5
+    shiki: ^1.16.2
+    yaml: ^2.5.1
   peerDependencies:
-    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x
+    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x
   bin:
     typedoc: bin/typedoc
-  checksum: e52efff8bf437b25828ee7e1200865e4914385e47964fc25bf4e58dc0d69cb026a8e9699b6091a9385732e9cee38480a5b290ab9e3f4fa4a5b8a3e244521d112
+  checksum: 748e577d365b7357f25455c5ee0889b4c843675f4c3de007636188fc2b46fa245f66fd31b0f7596b3e1a9ca0cd04a403b01f6cb29c55e7fa3bc1e75981f38314
   languageName: node
   linkType: hard
 
@@ -5910,12 +5954,12 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.4.5":
-  version: 2.4.5
-  resolution: "yaml@npm:2.4.5"
+"yaml@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "yaml@npm:2.5.1"
   bin:
     yaml: bin.mjs
-  checksum: f8efd407c07e095f00f3031108c9960b2b12971d10162b1ec19007200f6c987d2e28f73283f4731119aa610f177a3ea03d4a8fcf640600a25de1b74d00c69b3d
+  checksum: 31275223863fbd0b47ba9d2b248fbdf085db8d899e4ca43fff8a3a009497c5741084da6871d11f40e555d61360951c4c910b98216c1325d2c94753c0036d8172
   languageName: node
   linkType: hard
 
